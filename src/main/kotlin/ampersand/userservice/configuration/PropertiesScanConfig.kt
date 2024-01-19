@@ -1,0 +1,8 @@
+package ampersand.userservice.configuration
+
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
+import org.springframework.context.annotation.Configuration
+
+@Configuration
+@ConfigurationPropertiesScan
+class PropertiesScanConfig
