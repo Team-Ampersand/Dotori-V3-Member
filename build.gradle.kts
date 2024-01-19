@@ -33,6 +33,7 @@ dependencies {
     implementation("org.springframework.data:spring-data-commons")
     implementation("io.vertx:vertx-mysql-client:4.2.5")
     implementation("org.hibernate.reactive:hibernate-reactive-core:1.1.3.Final")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-hibernate-reactive:2.0.1.RELEASE")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
