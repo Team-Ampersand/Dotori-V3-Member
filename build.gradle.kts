@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.spring") version "1.9.21"
+    kotlin("plugin.jpa") version "1.9.21"
     kotlin("kapt") version "1.9.21"
 }
 
@@ -45,6 +46,19 @@ dependencyManagement {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
     }
 }
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
+}
+
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
