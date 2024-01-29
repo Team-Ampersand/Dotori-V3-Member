@@ -33,7 +33,7 @@ class MemberRepositoryImpl(
         }
     }
 
-    override suspend fun findById(id: Long): Mono<MemberEntity?> {
+    override suspend fun findById(id: Long): Mono<MemberEntity> {
         val member = reactiveQueryFactory.withFactory { _, queryFactory ->
             queryFactory.findById(id)
         }

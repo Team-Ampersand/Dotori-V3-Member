@@ -11,12 +11,14 @@ data class MemberInfo(
 
     val email: String,
 
-    val grade: Int,
+    val grade: Int?,
 
-    val classNum: Int,
+    val classNum: Int?,
 
-    val number: Int,
+    val number: Int?,
 
     @Enumerated(EnumType.STRING)
-    val authority: Authority
+    val authority: Authority,
+
+    val profileImage: String?
 )

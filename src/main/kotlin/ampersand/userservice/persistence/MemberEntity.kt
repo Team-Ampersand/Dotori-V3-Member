@@ -32,7 +32,7 @@ class MemberEntity(
     val grade: Int?,
 
     @Column(name = "class_number", columnDefinition = "TINYINT")
-    val classNumber: Int?,
+    val classNum: Int?,
 
     @Column(columnDefinition = "TINYINT")
     val number: Int?,

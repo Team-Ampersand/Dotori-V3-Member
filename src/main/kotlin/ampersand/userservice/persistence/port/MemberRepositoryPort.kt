@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono
 
 interface MemberRepositoryPort {
     suspend fun saveMember(member: MemberEntity): Mono<MemberEntity>
-    suspend fun findById(id: Long): Mono<MemberEntity?>
+    suspend fun findById(id: Long): Mono<MemberEntity>
 }
