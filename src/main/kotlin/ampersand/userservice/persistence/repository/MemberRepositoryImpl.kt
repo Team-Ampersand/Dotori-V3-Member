@@ -11,19 +11,20 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.hibernate.reactive.mutiny.Mutiny.*
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Mono
 
 @Repository
 class MemberRepositoryImpl(
     private val reactiveQueryFactory: HibernateMutinyReactiveQueryFactory,
 ) : MemberRepositoryPort {
 
-    override suspend fun saveMember(member: MemberEntity): MemberEntity {
+    override suspend fun saveMember(member: MemberEntity): Mono<MemberEntity> {
 
         reactiveQueryFactory.transactionWithFactory { session, _ ->
             session.persistMemberEntityConcurrently(memberEntity = member)
         }
 
-        return member
+        return Mono.just(member)
     }
 
     private suspend fun Session.persistMemberEntityConcurrently(memberEntity: MemberEntity) = coroutineScope {
@@ -32,12 +33,12 @@ class MemberRepositoryImpl(
         }
     }
 
-    override suspend fun findById(id: Long): MemberEntity? {
+    override suspend fun findById(id: Long): Mono<MemberEntity?> {
         val member = reactiveQueryFactory.withFactory { _, queryFactory ->
             queryFactory.findById(id)
         }
 
-        return member
+        return Mono.justOrEmpty(member)
     }
 
     private suspend fun ReactiveQueryFactory.findById(id: Long): MemberEntity? {
