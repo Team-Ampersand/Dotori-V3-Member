@@ -61,6 +61,10 @@ dependencies {
     // kapt
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    // security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.21")
+
 }
 
 dependencyManagement {
