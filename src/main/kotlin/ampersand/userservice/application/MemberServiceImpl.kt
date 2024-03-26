@@ -4,6 +4,8 @@ import ampersand.userservice.application.dto.LoginRequest
 import ampersand.userservice.application.dto.MemberInfo
 import ampersand.userservice.application.dto.SignUpMemberRequest
 import ampersand.userservice.infrastructure.error.MemberException
+import ampersand.userservice.infrastructure.security.jwt.JwtGenerator
+import ampersand.userservice.infrastructure.security.jwt.TokenType
 import ampersand.userservice.persistence.Authority
 import ampersand.userservice.persistence.MemberEntity
 import ampersand.userservice.persistence.port.MemberRepositoryPort
@@ -14,7 +16,8 @@ import org.springframework.stereotype.Service
 @Service
 class MemberServiceImpl(
     private val memberRepositoryPort: MemberRepositoryPort,
-    private val passwordEncoder: BCryptPasswordEncoder
+    private val passwordEncoder: BCryptPasswordEncoder,
+    private val jwtGenerator: JwtGenerator
 ) : MemberService {
 
     override suspend fun queryUserById(id: Long): MemberInfo {
@@ -48,6 +51,25 @@ class MemberServiceImpl(
     }
 
     override suspend fun login(request: LoginRequest) {
+        val member = memberRepositoryPort.findByEmail(request.email)
+            ?: throw MemberException("Not Found Member Exception", HttpStatus.NOT_FOUND)
+
+        if(!passwordEncoder.matches(request.password, member.password))
+            throw MemberException("password not matched.", HttpStatus.BAD_REQUEST)
+
+        val accessToken =
+    }
+
+    private fun getTokenResponse(member: MemberEntity, params: Map<String, Any>) {
+        val accessToken = jwtGenerator.generateToken(member.id.toString(), params, TokenType.ACCESS_TOKEN)
+        val expiresAt = jwtGenerator.
+    }
+
+    private suspend fun buildAccessTokenParams(member: MemberEntity): MutableMap<String, Any> {
+        return HashMap<String, Any>()
+            .apply {
+                put("authority", member.authority)
+            }
     }
 
     private fun mapToInfo(member: MemberEntity) = MemberInfo(

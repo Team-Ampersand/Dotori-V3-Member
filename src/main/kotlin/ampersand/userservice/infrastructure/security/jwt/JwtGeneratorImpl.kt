@@ -17,7 +17,7 @@ class JwtGeneratorImpl(
 ) : JwtGenerator {
 
     override fun generateToken(subject: String, params: Map<String,Any>, tokenType: TokenType): String {
-        val expiration = getExpiration(tokenType)
+        val expiration = Timestamp.valueOf(getExpiration(tokenType))
 
         val claimsBuilder = JWTClaimsSet.Builder()
             .subject(subject)
@@ -38,9 +38,9 @@ class JwtGeneratorImpl(
         return signedJwt.serialize()
     }
 
-    private fun getExpiration(tokenType: TokenType) = if (tokenType == TokenType.ACCESS_TOKEN) {
-        Timestamp.valueOf(LocalDateTime.now().plusHours(jwtProperties.getAccessTokenExpirationAsHour()))
+    override fun getExpiration(tokenType: TokenType): LocalDateTime = if (tokenType == TokenType.ACCESS_TOKEN) {
+        LocalDateTime.now().plusHours(jwtProperties.getAccessTokenExpirationAsHour())
     } else {
-        Timestamp.valueOf(LocalDateTime.now().plusHours(jwtProperties.getRefreshTokenExpirationAsHour()))
+        LocalDateTime.now().plusHours(jwtProperties.getRefreshTokenExpirationAsHour())
     }
 }
