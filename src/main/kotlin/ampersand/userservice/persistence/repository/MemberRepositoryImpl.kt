@@ -3,7 +3,6 @@ package ampersand.userservice.persistence.repository
 import ampersand.userservice.persistence.MemberEntity
 import ampersand.userservice.persistence.port.MemberRepositoryPort
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
-import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.query.HibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.singleQueryOrNull
@@ -41,23 +40,6 @@ class MemberRepositoryImpl(
         return member
     }
 
-    override suspend fun existsByEmail(email: String): Boolean =
-        reactiveQueryFactory.withFactory { _, queryFactory ->
-            queryFactory.existsByEmail(email)
-        }
-
-    private suspend fun ReactiveQueryFactory.existsByEmail(email: String): Boolean {
-        val member = this.listQuery {
-            select(entity(MemberEntity::class))
-            from(entity(MemberEntity::class))
-            where(
-                col(MemberEntity::email).equal(email)
-            )
-        }
-
-        return member.isNotEmpty()
-    }
-
     private suspend fun ReactiveQueryFactory.findById(id: Long): MemberEntity? {
         return this.singleQueryOrNull<MemberEntity> {
             select(entity(MemberEntity::class))
@@ -67,4 +49,41 @@ class MemberRepositoryImpl(
             )
         }
     }
+
+    override suspend fun findByEmail(email: String): MemberEntity? {
+        val member = reactiveQueryFactory.withFactory { _, queryFactory ->
+            queryFactory.findByEmail(email)
+        }
+
+        return member
+    }
+
+    private suspend fun ReactiveQueryFactory.findByEmail(email: String): MemberEntity? {
+        return this.singleQueryOrNull<MemberEntity> {
+            select(entity(MemberEntity::class))
+            from(entity(MemberEntity::class))
+            where(
+                col(MemberEntity::email).equal(email)
+            )
+        }
+    }
+
+    override suspend fun existsByEmail(email: String): Boolean =
+        reactiveQueryFactory.withFactory { _, queryFactory ->
+            queryFactory.existsByEmail(email)
+        }
+
+    private suspend fun ReactiveQueryFactory.existsByEmail(email: String): Boolean {
+        val member = this.singleQueryOrNull<MemberEntity> {
+            select(entity(MemberEntity::class))
+            from(entity(MemberEntity::class))
+            where(
+                col(MemberEntity::email).equal(email)
+            )
+        }
+
+        return member != null
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package ampersand.userservice.application
 
+import ampersand.userservice.application.dto.LoginRequest
 import ampersand.userservice.application.dto.MemberInfo
 import ampersand.userservice.application.dto.SignUpMemberRequest
 import ampersand.userservice.infrastructure.error.MemberException
@@ -44,6 +45,9 @@ class MemberServiceImpl(
                 authority = Authority.ROLE_MEMBER
             )
         )
+    }
+
+    override suspend fun login(request: LoginRequest) {
     }
 
     private fun mapToInfo(member: MemberEntity) = MemberInfo(
