@@ -3,6 +3,7 @@ package ampersand.userservice.persistence.repository
 import ampersand.userservice.persistence.MemberEntity
 import ampersand.userservice.persistence.port.MemberRepositoryPort
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
+import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.query.HibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.singleQueryOrNull
@@ -38,6 +39,23 @@ class MemberRepositoryImpl(
         }
 
         return member
+    }
+
+    override suspend fun existsByEmail(email: String): Boolean =
+        reactiveQueryFactory.withFactory { _, queryFactory ->
+            queryFactory.existsByEmail(email)
+        }
+
+    private suspend fun ReactiveQueryFactory.existsByEmail(email: String): Boolean {
+        val member = this.listQuery {
+            select(entity(MemberEntity::class))
+            from(entity(MemberEntity::class))
+            where(
+                col(MemberEntity::email).equal(email)
+            )
+        }
+
+        return member.isNotEmpty()
     }
 
     private suspend fun ReactiveQueryFactory.findById(id: Long): MemberEntity? {

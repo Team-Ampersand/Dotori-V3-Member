@@ -44,6 +44,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
 
+    // spring data
     implementation("org.springframework.data:spring-data-commons")
 
     // reactive persistence
@@ -64,6 +65,9 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.nimbusds:nimbus-jose-jwt:9.21")
+
+    // validator
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
 }
 
