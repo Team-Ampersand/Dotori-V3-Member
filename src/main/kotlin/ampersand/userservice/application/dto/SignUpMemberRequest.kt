@@ -9,10 +9,10 @@ data class SignUpMemberRequest(
     val memberName: String,
 
     @field:NotBlank
+    @field:Size(min = 4, max = 4)
     val stuNum: String,
 
     @field:NotBlank
-    @field:Size(min = 4, max = 4)
     val password: String,
 
     @field:Email
