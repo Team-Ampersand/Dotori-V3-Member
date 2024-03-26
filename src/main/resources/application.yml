@@ -1,5 +1,15 @@
 spring:
   application:
     name: user-server
+  profiles:
+    active: ${PROFILE:local}
+  main:
+    web-application-type: reactive
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: Asia/Seoul
   config:
     import: "optional:configserver:http://localhost:8071/"
+server:
+  shutdown: graceful

@@ -44,6 +44,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
 
+    // spring data
     implementation("org.springframework.data:spring-data-commons")
 
     // reactive persistence
@@ -52,6 +53,7 @@ dependencies {
     implementation("io.smallrye.reactive:mutiny-kotlin:1.4.0")
     implementation("io.smallrye.reactive:mutiny-reactor:1.4.0")
     implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-hibernate-reactive:2.0.1.RELEASE")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -60,6 +62,13 @@ dependencies {
 
     // kapt
     kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+    // security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.21")
+
+    // validator
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
 }
 

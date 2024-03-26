@@ -13,6 +13,8 @@ class MemberRouter {
         "/member".nest {
             contentType(MediaType.APPLICATION_JSON)
             GET("/id/{memberId}", memberHandler::queryMemberById)
+            POST("/signup", memberHandler::signUp)
+            POST("/", memberHandler::login)
         }
     }
 }
