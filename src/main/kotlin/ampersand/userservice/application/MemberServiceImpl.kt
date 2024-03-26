@@ -38,7 +38,7 @@ class MemberServiceImpl(
             throw MemberException("already exists member", HttpStatus.ALREADY_REPORTED)
         }
 
-        // TODO Email 인증 검사
+        // TODO Email 인증 검증
 
         memberRepositoryPort.saveMember(
             MemberEntity(
@@ -48,7 +48,7 @@ class MemberServiceImpl(
                 grade = request.stuNum.take(1).toInt(),
                 classNum = request.stuNum.substring(1, 2).toInt(),
                 number = request.stuNum.takeLast(2).toInt(),
-                profileImage = "",
+                profileImage = null,
                 authority = Authority.ROLE_MEMBER
             )
         )
