@@ -5,10 +5,13 @@ import ampersand.userservice.application.dto.MemberInfo
 import ampersand.userservice.application.dto.SignUpMemberRequest
 import ampersand.userservice.infrastructure.error.MemberException
 import ampersand.userservice.infrastructure.security.jwt.JwtGenerator
+import ampersand.userservice.infrastructure.security.jwt.TokenResponse
 import ampersand.userservice.infrastructure.security.jwt.TokenType
 import ampersand.userservice.persistence.Authority
 import ampersand.userservice.persistence.MemberEntity
+import ampersand.userservice.persistence.RefreshTokenEntity
 import ampersand.userservice.persistence.port.MemberRepositoryPort
+import ampersand.userservice.persistence.port.RefreshTokenRepositoryPort
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service
 @Service
 class MemberServiceImpl(
     private val memberRepositoryPort: MemberRepositoryPort,
+    private val refreshTokenRepositoryPort: RefreshTokenRepositoryPort,
     private val passwordEncoder: BCryptPasswordEncoder,
     private val jwtGenerator: JwtGenerator
 ) : MemberService {
@@ -50,27 +54,45 @@ class MemberServiceImpl(
         )
     }
 
-    override suspend fun login(request: LoginRequest) {
+    override suspend fun login(request: LoginRequest): TokenResponse {
         val member = memberRepositoryPort.findByEmail(request.email)
             ?: throw MemberException("Not Found Member Exception", HttpStatus.NOT_FOUND)
 
         if(!passwordEncoder.matches(request.password, member.password))
             throw MemberException("password not matched.", HttpStatus.BAD_REQUEST)
 
-        val accessToken =
+        return getTokenResponse(member)
     }
 
-    private suspend fun getTokenResponse(member: MemberEntity) {
-        val accessToken = jwtGenerator.generateToken(member.id.toString(), buildAccessTokenParams(member), TokenType.ACCESS_TOKEN)
+    private suspend fun getTokenResponse(member: MemberEntity): TokenResponse {
+        val accessToken = jwtGenerator.generateToken(member.id.toString(), buildParams(member), TokenType.ACCESS_TOKEN)
         val expiresAt = jwtGenerator.getExpiration(TokenType.ACCESS_TOKEN)
+        val refreshToken = saveRefreshToken(member, buildParams(member))
 
+        return TokenResponse(
+            accessToken = accessToken,
+            refreshToken = refreshToken.token,
+            expiresAt = expiresAt,
+            roles = mutableListOf(member.authority)
+        )
     }
 
-    private suspend fun buildAccessTokenParams(member: MemberEntity): MutableMap<String, Any> {
+    private suspend fun buildParams(member: MemberEntity): MutableMap<String, Any> {
         return HashMap<String, Any>()
             .apply {
                 put("authority", member.authority)
             }
+    }
+
+    private suspend fun saveRefreshToken(member: MemberEntity, params: Map<String, Any>): RefreshTokenEntity {
+        val refreshToken = jwtGenerator.generateToken(member.id.toString(), params, TokenType.REFRESH_TOKEN)
+
+        return refreshTokenRepositoryPort.saveRefreshToken(
+            RefreshTokenEntity(
+                token = refreshToken,
+                memberId = member.id
+            )
+        )
     }
 
     private fun mapToInfo(member: MemberEntity) = MemberInfo(
