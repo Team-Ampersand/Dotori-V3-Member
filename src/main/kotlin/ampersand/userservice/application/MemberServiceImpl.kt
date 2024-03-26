@@ -60,9 +60,10 @@ class MemberServiceImpl(
         val accessToken =
     }
 
-    private fun getTokenResponse(member: MemberEntity, params: Map<String, Any>) {
-        val accessToken = jwtGenerator.generateToken(member.id.toString(), params, TokenType.ACCESS_TOKEN)
-        val expiresAt = jwtGenerator.
+    private suspend fun getTokenResponse(member: MemberEntity) {
+        val accessToken = jwtGenerator.generateToken(member.id.toString(), buildAccessTokenParams(member), TokenType.ACCESS_TOKEN)
+        val expiresAt = jwtGenerator.getExpiration(TokenType.ACCESS_TOKEN)
+
     }
 
     private suspend fun buildAccessTokenParams(member: MemberEntity): MutableMap<String, Any> {

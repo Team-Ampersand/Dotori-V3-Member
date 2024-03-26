@@ -53,6 +53,7 @@ dependencies {
     implementation("io.smallrye.reactive:mutiny-kotlin:1.4.0")
     implementation("io.smallrye.reactive:mutiny-reactor:1.4.0")
     implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-hibernate-reactive:2.0.1.RELEASE")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
