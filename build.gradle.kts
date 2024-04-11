@@ -25,13 +25,16 @@ extra["springCloudVersion"] = "2023.0.0"
 dependencies {
 
     // webflux
-    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    // validator
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("javax.validation:validation-api:2.0.1.Final")
 
     // reactor & coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
@@ -66,9 +69,6 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.nimbusds:nimbus-jose-jwt:9.21")
-
-    // validator
-    implementation("org.springframework.boot:spring-boot-starter-validation")
 
 }
 
