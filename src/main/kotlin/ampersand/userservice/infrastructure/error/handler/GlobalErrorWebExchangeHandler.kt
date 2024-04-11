@@ -9,7 +9,6 @@ import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.codec.ServerCodecConfigurer
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.server.RequestPredicate
 import org.springframework.web.reactive.function.server.RequestPredicates
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions
@@ -50,7 +49,7 @@ class GlobalErrorWebExchangeHandler(
     private fun buildErrorResponse(ex: MemberException) =
         ServerResponse.status(ex.status)
             .bodyValue(
-                ErrorResponse.of(ex.cause!!)
+                ErrorResponse(ex.errorMessage, ex.status.value())
             )
 
 }
