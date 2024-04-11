@@ -16,7 +16,7 @@ class JwtGeneratorImpl(
     private val jwtProperties: JwtProperties
 ) : JwtGenerator {
 
-    override fun generateToken(subject: String, params: Map<String,Any>, tokenType: TokenType): String {
+    override fun generateToken(subject: String, params: Map<String, Any>, tokenType: TokenType): String {
         val expiration = Timestamp.valueOf(getExpiration(tokenType))
 
         val claimsBuilder = JWTClaimsSet.Builder()
