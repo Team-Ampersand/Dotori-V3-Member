@@ -3,6 +3,7 @@ package ampersand.userservice.persistence.repository
 import ampersand.userservice.persistence.MemberEntity
 import ampersand.userservice.persistence.port.MemberRepositoryPort
 import com.linecorp.kotlinjdsl.ReactiveQueryFactory
+import com.linecorp.kotlinjdsl.listQuery
 import com.linecorp.kotlinjdsl.query.HibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.singleQueryOrNull
@@ -40,12 +41,30 @@ class MemberRepositoryImpl(
         return member
     }
 
+    override suspend fun findAllByIds(ids: List<Long>): List<MemberEntity> {
+        val members = reactiveQueryFactory.withFactory { _, queryFactory ->
+            queryFactory.findAllByIds(ids)
+        }
+
+        return members
+    }
+
     private suspend fun ReactiveQueryFactory.findById(id: Long): MemberEntity? {
         return this.singleQueryOrNull<MemberEntity> {
             select(entity(MemberEntity::class))
             from(entity(MemberEntity::class))
             where(
                 col(MemberEntity::id).equal(id)
+            )
+        }
+    }
+
+    private suspend fun ReactiveQueryFactory.findAllByIds(ids: List<Long>): List<MemberEntity> {
+        return this.listQuery {
+            select(entity(MemberEntity::class))
+            from(entity(MemberEntity::class))
+            where(
+                col(MemberEntity::id).`in`(ids)
             )
         }
     }
