@@ -1,6 +1,7 @@
 package ampersand.userservice.application
 
 import ampersand.userservice.application.dto.LoginRequest
+import ampersand.userservice.application.dto.MemberIds
 import ampersand.userservice.application.dto.MemberInfo
 import ampersand.userservice.application.dto.SignUpMemberRequest
 import ampersand.userservice.infrastructure.error.MemberException
@@ -15,6 +16,7 @@ import ampersand.userservice.persistence.port.RefreshTokenRepositoryPort
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import kotlin.collections.HashMap
 
 @Service
 class MemberServiceImpl(
@@ -29,6 +31,12 @@ class MemberServiceImpl(
             ?: throw MemberException("not found member", HttpStatus.NOT_FOUND)
 
         return mapToInfo(findMember)
+    }
+
+    override suspend fun queryUsersByIds(request: MemberIds): List<MemberInfo> {
+        val findMembers = memberRepositoryPort.findAllByIds(request.ids)
+
+        return findMembers.map { mapToInfo(it) }
     }
 
     override suspend fun signUp(request: SignUpMemberRequest) {
