@@ -2,6 +2,7 @@ package ampersand.userservice.presentation
 
 import ampersand.userservice.application.MemberService
 import ampersand.userservice.application.dto.LoginRequest
+import ampersand.userservice.application.dto.MemberIds
 import ampersand.userservice.application.dto.SignUpMemberRequest
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Component
@@ -21,6 +22,14 @@ class MemberHandler(
         val memberId = serverRequest.pathVariable("memberId")
 
         val response = memberService.queryUserById(memberId.toLong())
+
+        return ServerResponse.ok().bodyValueAndAwait(response)
+    }
+
+    suspend fun queryMembersByIds(serverRequest: ServerRequest): ServerResponse {
+        val requestBody = serverRequest.bodyToMono<MemberIds>().awaitSingle()
+
+        val response = memberService.queryUsersByIds(requestBody)
 
         return ServerResponse.ok().bodyValueAndAwait(response)
     }
