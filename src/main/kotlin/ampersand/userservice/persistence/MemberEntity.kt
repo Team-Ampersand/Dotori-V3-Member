@@ -11,7 +11,7 @@ import javax.persistence.Table
 import org.jetbrains.annotations.NotNull
 
 @Entity
-@Table(name = "member")
+@Table(name = "tbl_member")
 class MemberEntity(
 
     @Id
