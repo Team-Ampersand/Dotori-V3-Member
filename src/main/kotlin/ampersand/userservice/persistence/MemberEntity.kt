@@ -42,5 +42,34 @@ class MemberEntity(
 
     @field:NotNull
     @field:Enumerated(EnumType.STRING)
-    val authority: Authority
-)
+    val authority: Authority,
+
+    @field:NotNull
+    @field:Enumerated(EnumType.STRING)
+    var selfStudyStatus: SelfStudyStatus,
+
+    @field:NotNull
+    @field:Enumerated(EnumType.STRING)
+    var massageStatus: MassageStatus
+) {
+    fun applySelfStudy(): MemberEntity {
+        this.selfStudyStatus = SelfStudyStatus.CANT
+        return this
+    }
+
+    fun cancelSelfStudy(): MemberEntity {
+        this.selfStudyStatus = SelfStudyStatus.CAN
+        return this
+    }
+
+    fun applyMassage(): MemberEntity {
+        this.massageStatus = MassageStatus.CANT
+        return this
+    }
+
+    fun cancelMassage(): MemberEntity {
+        this.massageStatus = MassageStatus.CAN
+        return this
+    }
+
+}

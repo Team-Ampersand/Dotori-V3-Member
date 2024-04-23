@@ -70,6 +70,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.nimbusds:nimbus-jose-jwt:9.21")
 
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka")
+
+    // other
     runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.108.Final:osx-aarch_64")
 
 }
