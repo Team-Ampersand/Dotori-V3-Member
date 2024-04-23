@@ -9,8 +9,10 @@ import ampersand.userservice.infrastructure.security.jwt.JwtGenerator
 import ampersand.userservice.infrastructure.security.jwt.TokenResponse
 import ampersand.userservice.infrastructure.security.jwt.TokenType
 import ampersand.userservice.persistence.Authority
+import ampersand.userservice.persistence.MassageStatus
 import ampersand.userservice.persistence.MemberEntity
 import ampersand.userservice.persistence.RefreshTokenEntity
+import ampersand.userservice.persistence.SelfStudyStatus
 import ampersand.userservice.persistence.port.MemberRepositoryPort
 import ampersand.userservice.persistence.port.RefreshTokenRepositoryPort
 import org.springframework.http.HttpStatus
@@ -57,7 +59,9 @@ class MemberServiceImpl(
                 classNum = request.stuNum.substring(1, 2).toInt(),
                 number = request.stuNum.takeLast(2).toInt(),
                 profileImage = null,
-                authority = Authority.ROLE_MEMBER
+                authority = Authority.ROLE_MEMBER,
+                selfStudyStatus = SelfStudyStatus.CAN,
+                massageStatus = MassageStatus.CAN
             )
         )
     }

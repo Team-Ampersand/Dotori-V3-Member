@@ -52,19 +52,24 @@ class MemberEntity(
     @field:Enumerated(EnumType.STRING)
     var massageStatus: MassageStatus
 ) {
-    fun applySelfStudy() {
+    fun applySelfStudy(): MemberEntity {
         this.selfStudyStatus = SelfStudyStatus.CANT
+        return this
     }
 
-    fun cancelSelfStudy() {
+    fun cancelSelfStudy(): MemberEntity {
         this.selfStudyStatus = SelfStudyStatus.CAN
+        return this
     }
 
-    fun applyMassage() {
+    fun applyMassage(): MemberEntity {
         this.massageStatus = MassageStatus.CANT
+        return this
     }
 
-    fun cancelMassage() {
+    fun cancelMassage(): MemberEntity {
         this.massageStatus = MassageStatus.CAN
+        return this
     }
+
 }
