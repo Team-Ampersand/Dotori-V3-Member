@@ -12,17 +12,20 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 class SecurityConfig {
 
     @Bean
-    protected fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        return http
-            .httpBasic().disable()
-            .formLogin().disable()
-            .csrf().disable()
-            .cors().disable()
-            .authorizeExchange()
-            .anyExchange().permitAll()
-            .and().build()
-    }
+    fun passwordEncoder() = BCryptPasswordEncoder()
+
 
     @Bean
-    fun passwordEncoder() = BCryptPasswordEncoder()
+    protected fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+        return http
+            .httpBasic { httpBasic -> httpBasic.disable() }
+            .formLogin { formLogin -> formLogin.disable() }
+            .csrf { csrf -> csrf.disable() }
+            .cors { cors -> cors.disable() }
+            .authorizeExchange { auth ->
+                auth
+                    .anyExchange().permitAll()
+            }
+            .build()
+    }
 }
