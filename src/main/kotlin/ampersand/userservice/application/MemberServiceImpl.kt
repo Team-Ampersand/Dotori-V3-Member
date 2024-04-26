@@ -115,6 +115,8 @@ class MemberServiceImpl(
         classNum = member.classNum,
         number = member.number,
         authority = member.authority,
-        profileImage = member.profileImage
+        profileImage = member.profileImage,
+        selfStudyStatus = member.selfStudyStatus,
+        massageStatus = member.massageStatus
     )
 }

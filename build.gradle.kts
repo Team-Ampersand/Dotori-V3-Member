@@ -72,6 +72,7 @@ dependencies {
 
     // kafka
     implementation("org.springframework.kafka:spring-kafka")
+    implementation("io.projectreactor.kafka:reactor-kafka")
 
     // other
     runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.108.Final:osx-aarch_64")

@@ -11,8 +11,8 @@ class MemberStatusCommandSagaImpl(
 ) : MemberStatusCommandSaga {
 
     override suspend fun applySelfStudy(id: Long) {
-        val member = memberRepositoryPort.findById(id)
-            ?: throw MemberException("Not Found Member Exception - method [ applySelfStudy() ]", HttpStatus.NOT_FOUND)
+        val member = (memberRepositoryPort.findById(id)
+            ?: throw MemberException("Not Found Member Exception - method [ applySelfStudy() ]",HttpStatus.NOT_FOUND))
         memberRepositoryPort.saveMember(member.applySelfStudy())
     }
 
