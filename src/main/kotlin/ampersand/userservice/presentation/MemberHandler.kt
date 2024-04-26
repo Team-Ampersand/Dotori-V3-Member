@@ -39,7 +39,7 @@ class MemberHandler(
 
         memberService.signUp(requestBody)
 
-        return ServerResponse.created(URI("/v2/auth")).buildAndAwait()
+        return ServerResponse.created(URI("/auth")).buildAndAwait()
     }
 
     suspend fun login(serverRequest: ServerRequest): ServerResponse {

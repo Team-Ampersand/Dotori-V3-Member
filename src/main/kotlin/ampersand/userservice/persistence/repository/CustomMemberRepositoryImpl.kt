@@ -14,7 +14,7 @@ import org.hibernate.reactive.mutiny.Mutiny.*
 import org.springframework.stereotype.Repository
 
 @Repository
-class MemberRepositoryImpl(
+class CustomMemberRepositoryImpl(
     private val reactiveQueryFactory: HibernateMutinyReactiveQueryFactory,
 ) : MemberRepositoryPort {
 
@@ -26,6 +26,7 @@ class MemberRepositoryImpl(
 
         return member
     }
+
 
     private suspend fun Session.persistMemberEntityConcurrently(memberEntity: MemberEntity) = coroutineScope {
         launch {
@@ -103,6 +104,5 @@ class MemberRepositoryImpl(
 
         return member != null
     }
-
 
 }
