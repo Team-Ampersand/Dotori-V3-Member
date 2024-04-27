@@ -10,7 +10,7 @@ class MemberRouter {
 
     @Bean
     fun memberBaseRouter(memberHandler: MemberHandler) = coRouter {
-        "/".nest {
+        "/member".nest {
             contentType(MediaType.APPLICATION_JSON)
             GET("/id/{memberId}", memberHandler::queryMemberById)
             GET("/ids", memberHandler::queryMembersByIds)
