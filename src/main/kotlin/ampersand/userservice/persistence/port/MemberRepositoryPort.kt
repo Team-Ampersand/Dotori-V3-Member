@@ -8,4 +8,6 @@ interface MemberRepositoryPort {
     suspend fun findAllByIds(id: List<Long>): List<MemberEntity>
     suspend fun findByEmail(email: String): MemberEntity?
     suspend fun existsByEmail(email: String): Boolean
+    fun findByIdSync(id: Long): MemberEntity?
+    fun saveSync(member: MemberEntity): MemberEntity
 }

@@ -10,28 +10,28 @@ class MemberStatusCommandSagaImpl(
     private val memberRepositoryPort: MemberRepositoryPort
 ) : MemberStatusCommandSaga {
 
-    override suspend fun applySelfStudy(id: Long) {
-        val member = (memberRepositoryPort.findById(id)
+    override fun applySelfStudy(id: Long) {
+        val member = (memberRepositoryPort.findByIdSync(id)
             ?: throw MemberException("Not Found Member Exception - method [ applySelfStudy() ]",HttpStatus.NOT_FOUND))
-        memberRepositoryPort.saveMember(member.applySelfStudy())
+        memberRepositoryPort.saveSync(member.applySelfStudy())
     }
 
-    override suspend fun cancelSelfStudy(id: Long) {
-        val member = memberRepositoryPort.findById(id)
+    override fun cancelSelfStudy(id: Long) {
+        val member = memberRepositoryPort.findByIdSync(id)
             ?: throw MemberException("Not Found Member Exception - method [ cancelSelfStudy() ]", HttpStatus.NOT_FOUND)
-        memberRepositoryPort.saveMember(member.cancelSelfStudy())
+        memberRepositoryPort.saveSync(member.cancelSelfStudy())
     }
 
-    override suspend fun applyMassage(id: Long) {
-        val member = memberRepositoryPort.findById(id)
+    override fun applyMassage(id: Long) {
+        val member = memberRepositoryPort.findByIdSync(id)
             ?: throw MemberException("Not Found Member Exception - method [ applyMassage() ]", HttpStatus.NOT_FOUND)
-        memberRepositoryPort.saveMember(member.applyMassage())
+        memberRepositoryPort.saveSync(member.applyMassage())
     }
 
-    override suspend fun cancelMassage(id: Long) {
-        val member = memberRepositoryPort.findById(id)
+    override fun cancelMassage(id: Long) {
+        val member = memberRepositoryPort.findByIdSync(id)
             ?: throw MemberException("Not Found Member Exception - method [ cancelMassage() ]", HttpStatus.NOT_FOUND)
-        memberRepositoryPort.saveMember(member.cancelMassage())
+        memberRepositoryPort.saveSync(member.cancelMassage())
     }
 
 }
