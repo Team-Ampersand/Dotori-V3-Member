@@ -8,6 +8,7 @@ import com.linecorp.kotlinjdsl.query.HibernateMutinyReactiveQueryFactory
 import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.singleQueryOrNull
 import io.smallrye.mutiny.coroutines.awaitSuspending
+import javax.persistence.EntityManagerFactory
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.hibernate.reactive.mutiny.Mutiny.*
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Repository
 @Repository
 class CustomMemberRepositoryImpl(
     private val reactiveQueryFactory: HibernateMutinyReactiveQueryFactory,
+    private val entityManagerFactory: EntityManagerFactory
 ) : MemberRepositoryPort {
+
+    private val entityManager = entityManagerFactory.createEntityManager()
 
     override suspend fun saveMember(member: MemberEntity): MemberEntity {
 
@@ -103,6 +107,15 @@ class CustomMemberRepositoryImpl(
         }
 
         return member != null
+    }
+
+    override fun findByIdSync(id: Long): MemberEntity? =
+        entityManager.find(MemberEntity::class.java,id);
+
+
+    override fun saveSync(member: MemberEntity): MemberEntity {
+        entityManager.persist(member)
+        return member
     }
 
 }
